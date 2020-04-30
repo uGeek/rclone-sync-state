@@ -43,7 +43,7 @@ then
     echo "
 ###  Crontab
 # */2 * * * *  /usr/local/bin/rclonesync "$HOME"/directorio "$2":/ --verbose >> ~/.config/rclonesync/"$2" 2>&1
-# */1 * * * * "$HOME"/todo/rclone-sync-stats e "$2"
+# */10 * * * * "$HOME"/todo/rclone-sync-stats e "$2"
 /usr/local/bin/rclonesync  "$HOME"/directorio "$2":/ --verbose --first-sync >> ~/.config/rclonesync/"$2" 2>&1" > ~/.config/rclonesync/$2
 $EDITOR  ~/.config/rclonesync/$2   
 echo " "
