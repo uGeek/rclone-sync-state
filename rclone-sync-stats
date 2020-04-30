@@ -43,7 +43,7 @@ then
 echo ""
 echo -e "\e[4mAñade a tu cron con crontab -e\e[0m"
 echo ""
-echo "*/2 * * * * $(cat ~/.config/rclonesync/webdav | sed s'|--first-sync||'g)"
+echo "*/2 * * * * $(cat ~/.config/rclonesync/$2 | sed s'|--first-sync||'g)"
 echo "*/10 * * * * /home/angel/rclone-sync-stats e $2"
 echo ""
 echo ""
