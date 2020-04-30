@@ -1,5 +1,5 @@
 #!/bin/bash
-VERSION="v0.2 200430"
+VERSION="v0.3 200430"
 
 source  ~/.config/rclonesync/telegram
 
@@ -19,13 +19,31 @@ rclone-sync-stat. $VERSION
 "
 fi
 
+if [ "$1" = "t" ]
+then
+echo "Vamos añadir el Token e ID de Telegram donde vas a recibir las notifiaciones"    
+echo ""
+echo -en " Token: "
+read TOKEN
+echo -en " ID: "
+read ID
+echo -en "TOKEN='"$TOKEN"'\nID='"$ID"'" >  ~/.config/rclonesync/telegram
+fi
+
+if [ "$1" = "i" ]
+then
+sudo curl -L https://raw.githubusercontent.com/cjnaz/rclonesync-V2/master/rclonesync.py -o /usr/local/bin/rclonesync && sudo chmod +x /usr/local/bin/rclonesync
+echo "actualizado"
+exit
+fi
+
 if [ "$1" = "fs" ]
 then
 /bin/bash ~/.config/rclonesync/$2
 echo "Añade a tu cron con crontab -e"
 echo ""
-cat ~/.config/rclonesync/webdav | grep "#" | cut -d "#" -f2- | grep -v "##"
-echo
+echo "*/2 * * * * $(cat ~/.config/rclonesync/webdav | sed s'|--first-sync||'g)"
+echo "*/10 * * * * /home/angel/rclone-sync-stats e $2"
 fi
 
 if [ "$1" = "e" ]
@@ -40,35 +58,13 @@ fi
 
 if [ "$1" = "n" ]
 then
-    mkdir -p ~/.config/rclonesync/
-    echo "
-###  Crontab
-# */2 * * * *  /usr/local/bin/rclonesync "$HOME"/directorio "$2":/ --verbose >> ~/.config/rclonesync/log_"$2" 2>&1
-# */10 * * * * "$HOME"/rclone-sync-stats e "$2"
-/usr/local/bin/rclonesync  "$HOME"/directorio "$2":/ --verbose --first-sync >> ~/.config/rclonesync/log_"$2" 2>&1" > ~/.config/rclonesync/$2
+mkdir -p ~/.config/rclonesync/
+echo "/usr/local/bin/rclonesync  "$HOME"/directorio "$2":/ --verbose --first-sync >> ~/.config/rclonesync/log_"$2" 2>&1" > ~/.config/rclonesync/$2
 $EDITOR  ~/.config/rclonesync/$2   
 echo " "
-fi
-
-if [ "$1" = "i" ]
-then
-sudo curl -L https://raw.githubusercontent.com/cjnaz/rclonesync-V2/master/rclonesync.py -o /usr/local/bin/rclonesync && sudo chmod +x /usr/local/bin/rclonesync
-exit
 fi
 
 if [ "$1" = "l" ]
 then
 cat  ~/.config/rclonesync/log_$2
 fi
-
-if [ "$1" = "t" ]
-then
-echo "Vamos añadir el Token e ID de Telegram donde vas a recibir las notifiaciones"
-echo ""
-echo -en " Token: "
-read TOKEN
-echo -en " ID: "
-read ID
-echo -en "TOKEN='"$TOKEN"'\nID='"$ID"'" >  ~/.config/rclonesync/telegram
-fi
-
