@@ -8,8 +8,7 @@ ID="XXXXXXX"
 
 if [ "$1" = "-h" ] ||  [ "$1" = "--help" ] ||  [ "$1" = "" ]
 then
-echo "                                                                                                                                                                                                             
-rclone-sync-stat.                                                                                                                                                                                                  
+echo "rclone-sync-stat                                                                                                                                                                                                  
                     OPCIÓN             SIGNIFICADO                                                                                                                                                                 
 rclone-sync-stat    e  [nube]      ->  Mira si hay un error. En caso que así sea, envia una notificación                                                                                                           
 rclone-sync-stat    fs [nube]      ->  First-Sync                                                                                                                                                                  
@@ -22,12 +21,14 @@ rclone-sync-stat. $VERSION
 "
 fi
 
-
 if [ "$1" = "fs" ]
 then
 /bin/bash ~/.config/rclonesync/$2
+echo "Añade a tu cron con crontab -e"
+echo ""
+cat ~/.config/rclonesync/webdav | grep "#" | cut -d "#" -f2- | grep -v "##"
+echo
 fi
-
 
 if [ "$1" = "e" ]
 then
