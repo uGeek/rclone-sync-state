@@ -1,0 +1,56 @@
+#!/bin/bash
+
+# TELEGRAM TOKEN & ID
+TOKEN="XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+ID="XXXXXXX"
+
+
+
+
+if [ "$1" = "-h" ] ||  [ "$1" = "--help" ] ||  [ "$1" = "" ]
+then
+echo "
+
+OPCIÓN            SIGNIFICADO
+rclone-sync-stat    e  [nube]      ->  Mira si hay un error. En caso que así sea, envia una notificación  
+rclone-sync-stat    fs [nube]      ->  First-Sync
+rclone-sync-stat    n  [nube]      ->  Añade el comando hacia la nube
+rclone-sync-stat    l  [logs]      ->  Añade el comando hacia la nube
+rclone-sync-stat   -h              ->  Ayuda
+
+"
+fi
+
+if [ "$1" = "fs" ]
+then
+/bin/bash ~/.config/rclonesync/$2
+fi
+
+
+if [ "$1" = "e" ]
+then
+ERROR=$(cat  ~/.config/rclonesync/log_$2 | tail -n5 | grep "Error")   
+if [ "$ERROR" != "" ]
+then
+echo "ERROR"
+curl -X POST https://api.telegram.org/bot$TOKEN/sendMessage\?chat_id\=$ID\&text\="Error de Sincronización con la nube $2 en $(hostname)"
+fi
+fi
+
+if [ "$1" = "n" ]
+then
+    mkdir -p ~/.config/rclonesync/
+    echo "
+###  Crontab
+# */2 * * * *  /usr/local/bin/rclonesync "$HOME"/directorio "$2":/ --verbose >> ~/.config/rclonesync/"$2" 2>&1
+# */1 * * * * "$HOME"/todo/rclone-sync-stats e "$2"
+/usr/local/bin/rclonesync  "$HOME"/directorio "$2":/ --verbose --first-sync >> ~/.config/rclonesync/"$2" 2>&1" > ~/.config/rclonesync/$2
+$EDITOR  ~/.config/rclonesync/$2   
+echo " "
+fi
+
+if [ "$1" = "l" ]
+then
+cat  ~/.config/rclonesync/log_$2
+fi
+
