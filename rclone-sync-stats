@@ -42,9 +42,9 @@ then
     mkdir -p ~/.config/rclonesync/
     echo "
 ###  Crontab
-# */2 * * * *  /usr/local/bin/rclonesync "$HOME"/directorio "$2":/ --verbose >> ~/.config/rclonesync/"$2" 2>&1
+# */2 * * * *  /usr/local/bin/rclonesync "$HOME"/directorio "$2":/ --verbose >> ~/.config/rclonesync/log_"$2" 2>&1
 # */10 * * * * "$HOME"/todo/rclone-sync-stats e "$2"
-/usr/local/bin/rclonesync  "$HOME"/directorio "$2":/ --verbose --first-sync >> ~/.config/rclonesync/"$2" 2>&1" > ~/.config/rclonesync/$2
+/usr/local/bin/rclonesync  "$HOME"/directorio "$2":/ --verbose --first-sync >> ~/.config/rclonesync/log_"$2" 2>&1" > ~/.config/rclonesync/$2
 $EDITOR  ~/.config/rclonesync/$2   
 echo " "
 fi
