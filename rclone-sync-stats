@@ -23,7 +23,7 @@ rclone-sync-stat    n  [nube]      ->  Añade el comando hacia la nube
 rclone-sync-stat    l  [logs]      ->  Añade el comando hacia la nube
 rclone-sync-stat    t              ->  Añade Token e ID de telegram 
 rclone-sync-stat    i              ->  Instalar o actualizar rclonesync. Ejecutar como sudo 
-rclone-sync-stat    t  [texto]     ->  Mensaje de prueba a Telegram
+rclone-sync-stat    tt [texto]     ->  Mensaje de prueba a Telegram
 rclone-sync-stat   -h              ->  Ayuda                                                                                                                                                                       
                                                                                                                                                                                                                    
 rclone-sync-stat. $VERSION                                                                                                                                                                                                           
@@ -73,7 +73,7 @@ curl -X POST https://api.telegram.org/bot$TOKEN/sendMessage\?chat_id\=$ID\&text\
 fi
 fi
 
-if [ "$1" = "t" ]
+if [ "$1" = "tt" ]
 then
 curl -X POST https://api.telegram.org/bot$TOKEN/sendMessage\?chat_id\=$ID\&text\="$2"
 fi
