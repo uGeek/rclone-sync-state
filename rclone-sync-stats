@@ -13,7 +13,6 @@ echo ""
 echo -e "\e[3m  rclone-sync-stats t nombre_nube\e[0m"
 fi
 
-
 if [ "$1" = "-h" ] ||  [ "$1" = "--help" ] ||  [ "$1" = "" ]
 then
 echo "rclone-sync-stat                                                                                                                                                                                                  
@@ -48,3 +47,44 @@ echo "actualizado"
 exit
 fi
 
+if [ "$1" = "fs" ]
+then
+/bin/bash ~/.config/rclonesync/$2
+echo ""
+echo -e "\e[4mAñade a tu cron con crontab -e\e[0m"
+echo ""
+echo "*/2 * * * * $(cat ~/.config/rclonesync/$2 | sed s'|--first-sync||'g)"
+echo "*/10 * * * * /home/angel/rclone-sync-stats e $2"
+echo ""
+echo ""
+echo -e "\e[4mLog de rclonesync\e[0m"
+cat  ~/.config/rclonesync/log_$2 | tail -n2
+echo ""
+fi
+
+if [ "$1" = "e" ]
+then
+ERROR=$(cat  ~/.config/rclonesync/log_$2 | tail -n5 | grep "Error")   
+if [ "$ERROR" != "" ]
+then
+echo "ERROR"
+curl -X POST https://api.telegram.org/bot$TOKEN/sendMessage\?chat_id\=$ID\&text\="Error de Sincronización con la nube $2 en $(hostname)"
+fi
+fi
+
+if [ "$1" = "n" ]
+then
+mkdir -p ~/.config/rclonesync/
+echo -en "Ruta local: "
+read LOCAL
+echo -en "Ruta en rclone: "
+read RCLONE
+echo "/usr/local/bin/rclonesync  "$LOCAL" "$RCLONE" --verbose --first-sync >> ~/.config/rclonesync/log_"$2" 2>&1" > ~/.config/rclonesync/$2
+#$EDITOR  ~/.config/rclonesync/$2   
+echo " "
+fi
+
+if [ "$1" = "l" ]
+then
+cat  ~/.config/rclonesync/log_$2
+fi
