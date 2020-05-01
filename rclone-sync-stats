@@ -80,9 +80,18 @@ read LOCAL
 echo -en "Ruta en rclone: "
 read RCLONE
 echo "/usr/local/bin/rclonesync  "$LOCAL" "$RCLONE" --verbose --first-sync >> ~/.config/rclonesync/log_"$2" 2>&1" > ~/.config/rclonesync/$2
-#$EDITOR  ~/.config/rclonesync/$2   
+echo $(cat ~/.config/rclonesync/$2 | sed s'|--first-sync|--force|'g) > ~/.config/rclonesync/force.$2
 echo " "
 fi
+
+if [ "$1" = "f" ]
+then
+/bin/bash  ~/.config/rclonesync/force.$2
+echo ""
+echo -e "\e[4mLog de rclonesync\e[0m"
+cat  ~/.config/rclonesync/log_$2 | tail -n2
+fi
+
 
 if [ "$1" = "l" ]
 then
