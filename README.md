@@ -1,4 +1,4 @@
-# rclone-sync-stats
+# rclone-sync-state
 
 ## Instalación
 `git clone https://github.com/uGeek/rclone-sync-stats.git ~/rclone-sync-stats`
