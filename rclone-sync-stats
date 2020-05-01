@@ -50,6 +50,13 @@ echo ""
 echo -e "\e[4mLog de rclonesync\e[0m"
 cat  ~/.config/rclonesync/log_$2 | tail -n2
 echo ""
+if [ -f  "$HOME/.config/rclonesync/telegram" ]
+then
+echo ""
+else
+echo "Añade el Token e ID de Telegram, para que te notifique en caso de mala sincronización"
+echo "rclone-sync-stats t nombre_nube2
+fi
 fi
 
 if [ "$1" = "e" ]
