@@ -1,7 +1,9 @@
 # rclone-sync-state
 
 ## Instalación
-`git clone https://github.com/uGeek/rclone-sync-stats.git ~/rclone-sync-stats`
+```
+sudo curl -L https://raw.githubusercontent.com/uGeek/rclone-sync-state/master/rclonesyncstate \
+          -o /usr/bin/rclonesyncstate && sudo chmod +x /usr/bin/rclonesyncstate
+```
 
-`cd ~/rclone-sync-stats ; sudo chmod +x rclone-sync-stats`
-
+`rclonesyncstate`
