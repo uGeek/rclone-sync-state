@@ -1,5 +1,5 @@
 #!/bin/bash
-VERSION="v0.4 20501"
+VERSION="v0.5 20501"
 
 
 if [ -f  "$HOME/.config/rclonesync/telegram" ]
@@ -10,23 +10,26 @@ echo""
 echo "Añade el Token e ID de Telegram, para que te notifique en caso de mala sincronización"
 echo "Introduce el comando:"
 echo ""
-echo -e "\e[3m  rclone-sync-stats t nombre_nube\e[0m"
+echo -e "\e[3m  rclonesyncstate t nombre_nube\e[0m"
+echo ""
+echo ""
 fi
 
 if [ "$1" = "-h" ] ||  [ "$1" = "--help" ] ||  [ "$1" = "" ]
 then
-echo "rclone-sync-stat                                                                                                                                                                                                  
+echo "rclonesyncstate                                                                                                                                                                                                  
                     OPCIÓN             SIGNIFICADO                                                                                                                                                                 
-rclone-sync-stat    e  [nube]      ->  Mira si hay un error. En caso que así sea, envia una notificación                                                                                                           
-rclone-sync-stat    fs [nube]      ->  First-Sync                                                                                                                                                                  
-rclone-sync-stat    n  [nube]      ->  Añade el comando hacia la nube                                                                                                                                              
-rclone-sync-stat    l  [logs]      ->  Añade el comando hacia la nube
-rclone-sync-stat    t              ->  Añade Token e ID de telegram 
-rclone-sync-stat    i              ->  Instalar o actualizar rclonesync. Ejecutar como sudo 
-rclone-sync-stat    tt [texto]     ->  Mensaje de prueba a Telegram
-rclone-sync-stat   -h              ->  Ayuda                                                                                                                                                                       
-                                                                                                                                                                                                                   
-rclone-sync-stat. $VERSION                                                                                                                                                                                                           
+rclonesyncstate    e  [nube]      ->  Mira si hay un error. En caso que así sea, envia una notificación                                                                                                         
+rclonesyncstate    fs [nube]      ->  First-Sync                                                                                                                                                                 
+rclonesyncstate    n  [nube]      ->  Añade el comando hacia la nube                                                                                                                                             
+rclonesyncstate    l  [logs]      ->  Añade el comando hacia la nube
+rclonesyncstate    t              ->  Añade Token e ID de telegram 
+rclonesyncstate    i              ->  Instalar o actualizar rclonesync. Ejecutar como sudo 
+rclonesyncstate    tt [texto]     ->  Mensaje de prueba a Telegram
+rclonesyncstate   -h              ->  Ayuda                                                                                                                                                                       
+                                                                                                                                                                                                                 
+rclonesyncstate. $VERSION                                                                                                                                                                                        
+                   
 "
 fi
 
@@ -43,7 +46,7 @@ fi
 
 if [ "$1" = "i" ]
 then
-sudo curl -L https://raw.githubusercontent.com/cjnaz/rclonesync-V2/master/rclonesync.py -o /usr/local/bin/rclonesync && sudo chmod +x /usr/local/bin/rclonesync
+sudo curl -L https://raw.githubusercontent.com/cjnaz/rclonesync-V2/master/rclonesync.py -o /usr/bin/rclonesync && sudo chmod +x /usr/bin/rclonesync
 echo "actualizado"
 exit
 fi
@@ -55,7 +58,7 @@ echo ""
 echo -e "\e[4mAñade a tu cron con crontab -e\e[0m"
 echo ""
 echo "*/2 * * * * $(cat ~/.config/rclonesync/$2 | sed s'|--first-sync||'g)"
-echo "*/10 * * * * /home/angel/rclone-sync-stats e $2"
+echo "*/10 * * * * /usr/bin/rclonesyncstate e $2"
 echo ""
 echo ""
 echo -e "\e[4mLog de rclonesync\e[0m"
@@ -85,7 +88,7 @@ echo -en "Ruta local: "
 read LOCAL
 echo -en "Ruta en rclone: "
 read RCLONE
-echo "/usr/local/bin/rclonesync  "$LOCAL" "$RCLONE" --verbose --first-sync >> ~/.config/rclonesync/log_"$2" 2>&1" > ~/.config/rclonesync/$2
+echo "/usr/bin/rclonesync  "$LOCAL" "$RCLONE" --verbose --first-sync >> ~/.config/rclonesync/log_"$2" 2>&1" > ~/.config/rclonesync/$2
 echo $(cat ~/.config/rclonesync/$2 | sed s'|--first-sync|--force|'g) > ~/.config/rclonesync/force.$2
 echo " "
 fi
